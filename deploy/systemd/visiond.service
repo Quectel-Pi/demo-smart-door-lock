@@ -1,0 +1,24 @@
+[Unit]
+Description=visiond - door lock vision (record / intrusion / package)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=@SERVICE_USER@
+WorkingDirectory=@PROJECT_ROOT@
+EnvironmentFile=@PROJECT_ROOT@/deploy/systemd/doorlock.env
+ExecStart=@PROJECT_ROOT@/.venv/bin/python @PROJECT_ROOT@/main.py --backend-only
+Restart=always
+RestartSec=3
+
+# 摄像头与 NPU 需要的基本权限
+SupplementaryGroups=video render
+# 门锁本来就该限制资源：吃满 CPU 会让对讲卡顿
+CPUQuota=300%
+MemoryMax=1G
+# 录制目录
+ReadWritePaths=@PROJECT_ROOT@/data
+
+[Install]
+WantedBy=multi-user.target

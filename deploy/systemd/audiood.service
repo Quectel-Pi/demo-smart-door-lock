@@ -1,0 +1,20 @@
+[Unit]
+Description=audiood - doorbell talk / auto reply (Coze)
+After=network-online.target sound.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=@SERVICE_USER@
+WorkingDirectory=@PROJECT_ROOT@
+EnvironmentFile=@PROJECT_ROOT@/deploy/systemd/doorlock.env
+ExecStart=@PROJECT_ROOT@/.venv/bin/python @PROJECT_ROOT@/main.py --audio-only
+Restart=always
+RestartSec=3
+
+SupplementaryGroups=audio
+CPUQuota=200%
+MemoryMax=512M
+
+[Install]
+WantedBy=multi-user.target
