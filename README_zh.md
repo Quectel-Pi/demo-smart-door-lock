@@ -30,7 +30,7 @@
 
 - 操作系统：Debian 13（Quectel Pi 默认系统，aarch64）
 - 后端环境 `.venv`：Python 3.11（由 uv 安装），与 RKNN Lite 2.3.2 匹配
-- 界面环境 `.venv-ui`：系统 Python 3.13 + PySide6 6.8.3，原因见 [docs/ui-runtime.md](docs/ui-runtime.md)
+- 界面环境 `.venv-ui`：系统 Python 3.13 + PySide6 6.8.3
 - 主要依赖：aiohttp、OpenCV、NumPy、cozepy、pyserial、sounddevice、
   adafruit-circuitpython-fingerprint（完整列表见 [requirements.txt](requirements.txt)）
 - 语音：Coze 账号及 API Token
@@ -70,7 +70,7 @@
 
 ```bash
 sudo apt update
-git clone https://github.com/jjking619/smart-door-lock.git
+git clone https://github.com/Quectel-Pi/demo-smart-door-lock
 cd smart-door-lock
 bash install.sh
 ```
@@ -247,9 +247,6 @@ smart-door-lock/
   `defect-parcel`、`good-parcel`，来自公开的
   [包裹检测权重](https://github.com/Y47ya/parcels-object-detection-and-classification-Yolov5)，
   转换为未量化 RKNN。
-
-模型不是仅改文件名即可替换，详见 [src/vision/README.md](src/vision/README.md)。
-模型按各自上游许可证使用，见 [models/LICENSE](models/LICENSE)。
 
 ## 许可证
 

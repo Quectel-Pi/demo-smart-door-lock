@@ -27,7 +27,7 @@ A smart door lock demo for the [Quectel Pi M2](https://www.quectel.com.cn/quecte
 
 - Operating system: Debian 13 (default OS of Quectel Pi, aarch64)
 - Backend environment `.venv`: Python 3.11 (installed by uv), matching RKNN Lite 2.3.2
-- UI environment `.venv-ui`: system Python 3.13 + PySide6 6.8.3; see [docs/ui-runtime.md](docs/ui-runtime.md) for why it is separate
+- UI environment `.venv-ui`: system Python 3.13 + PySide6 6.8.3;
 - Main dependencies: aiohttp, OpenCV, NumPy, cozepy, pyserial, sounddevice, adafruit-circuitpython-fingerprint (full list in [requirements.txt](requirements.txt))
 - Voice: a Coze account and API token
 
@@ -63,7 +63,7 @@ Run the following in a desktop terminal on the board as a **normal user** (do no
 
 ```bash
 sudo apt update
-git clone https://github.com/jjking619/smart-door-lock.git
+git clone https://github.com/Quectel-Pi/demo-smart-door-lock
 cd smart-door-lock
 bash install.sh
 ```
@@ -144,13 +144,7 @@ A fingerprint must be enrolled before it can unlock; unregistered templates do n
 
 If the two presses repeatedly fail to merge, enroll again with the same finger in the same position. Enrollment only registers identity and does not unlock by itself. Templates are stored in the AS608 module; `data/fingerprint/users.json` only stores IDs and names.
 
-## 6. Using the Real Servo
-
-Before the first start, wire as described in section 4 and calibrate with no mechanical load. Confirm again: Pin33 connects to the signal wire, the servo is powered by a separate regulated 5V supply, and the supply shares ground with the M2; do not power the servo from GPIO/3.3V. Adjust `LOCK_SERVO_LOCKED_ANGLE` and `LOCK_SERVO_UNLOCKED_ANGLE` for your mechanism, ensuring the servo does not hit a limit or stall. The template defaults to `LOCK_DRIVER=servo`, so no driver switch is needed. After startup, check lock health and verify actual unlocking and re-locking.
-
-The SG90 has no position feedback, so software cannot guarantee re-locking after power loss or a crash. Keep a mechanical emergency way to open the door, and do not rely on software alone for personal safety.
-
-## 7. Optional: systemd Background Services
+## 6. Optional: systemd Background Services
 
 The install script only generates service files; it does not install or start them. First exit the desktop launcher and any old services on the same ports, confirm `LOCK_DRIVER=servo`, and make sure the servo is calibrated without load with a safe locked angle. Enabling lockd immediately drives the servo to the locked angle. From the project root:
 
@@ -204,7 +198,6 @@ The vision service runs two RKNN models in parallel, on NPU Core0 and Core1 of t
 - **Person model** `yolov5s-rk3576.rknn`: YOLOv5s (COCO); only person detections are kept.
 - **Parcel model** `parcel-yolov5n-rk3576-fp.rknn`: a dedicated YOLOv5n with classes `defect-parcel` and `good-parcel`, from the public [parcel detection weights](https://github.com/Y47ya/parcels-object-detection-and-classification-Yolov5), converted to an unquantized RKNN.
 
-Models cannot be swapped by only renaming files; see [src/vision/README.md](src/vision/README.md). Models are used under their own upstream licenses; see [models/LICENSE](models/LICENSE).
 
 ## License
 
@@ -212,10 +205,4 @@ The project code is released under the [Apache License 2.0](LICENSE).
 
 ## Reporting Issues
 
-If you run into problems, please submit technical inquiries on the [Quectel Official Forum](https://forumschinese.quectel.com/c/quectel-pi/58). Issues and Pull Requests are welcome.
-
-## Notes
-
-- To keep detecting without a UI, set `VISION_PAUSE_WITHOUT_UI=0` and restart the vision service.
-- Fingerprint management needs no PIN; recordings and events are stored in `data/`, so mind access permissions, disk space, and backups.
-- A successful installation per this README does not mean real hardware, network, model accuracy, or Coze quota has been verified.
+If you run into problems, please submit technical inquiries on the [Quectel Official Forum](https://forums.quectel.com/). Issues and Pull Requests are welcome.
