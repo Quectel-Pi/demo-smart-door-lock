@@ -1,0 +1,17 @@
+[Unit]
+Description=fingerprintd - AS608 fingerprint identification service
+After=network.target
+
+[Service]
+Type=simple
+User=@SERVICE_USER@
+WorkingDirectory=@PROJECT_ROOT@
+EnvironmentFile=@PROJECT_ROOT@/deploy/systemd/doorlock.env
+ExecStart=@PROJECT_ROOT@/.venv/bin/python @PROJECT_ROOT@/main.py --fingerprint-only
+Restart=always
+RestartSec=3
+SupplementaryGroups=dialout
+ReadWritePaths=@PROJECT_ROOT@/data
+
+[Install]
+WantedBy=multi-user.target
